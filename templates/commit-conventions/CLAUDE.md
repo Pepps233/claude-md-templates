@@ -1,11 +1,12 @@
-# Claude Instructions
+# Commit Guidelines
 
 ## Style
-- Do not use emojis in responses and code output
 
-## Commit Guidelines
+Do not use emojis in responses or code output.
 
-To maintain a clean and readable Git history, all commits must follow this format:
+## Commit Format
+
+All commits must follow this format:
 
 ```
 <type>(<scope>): <short, imperative summary>
@@ -14,14 +15,14 @@ To maintain a clean and readable Git history, all commits must follow this forma
 - Focus on what and why
 ```
 
-### Commit Rules
+## Rules
 
-* Use **imperative tense** (`add`, `fix`, `remove`)
-* No period at the end of the summary
-* Keep the summary under **50 characters**
-* One logical change per commit
+- Use imperative tense (`add`, `fix`, `remove`)
+- No period at the end of the summary line
+- Keep the summary under 50 characters
+- One logical change per commit
 
-### Commit Types
+## Commit Types
 
 | Type       | Description                                        |
 | ---------- | -------------------------------------------------- |
@@ -36,24 +37,24 @@ To maintain a clean and readable Git history, all commits must follow this forma
 | `ci`       | CI/CD configuration                                |
 | `build`    | Build system or build tooling                      |
 
-### Scopes
+## Scopes
 
-Scopes describe **where** the change happened. Use the most specific option available.
+Use the most specific scope available for where the change happened.
 
 **Features / Domains**
-* `auth`, `billing`, `search`, `checkout`, `profile`
+- `auth`, `billing`, `search`, `checkout`, `profile`
 
 **Technical Layers**
-* `api`, `ui`, `db`, `backend`, `frontend`
+- `api`, `ui`, `db`, `backend`, `frontend`
 
 **Infrastructure**
-* `ci`, `deps`, `config`
+- `ci`, `deps`, `config`
 
-### Summary Guidelines
+## Summary Guidelines
 
 The summary should answer: *What does this commit do?*
 
-**Good Examples:**
+**Good examples:**
 ```
 feat(auth): add password reset endpoint
 fix(ui): prevent crash on empty results
@@ -67,12 +68,12 @@ update stuff
 feat(auth): added password reset
 ```
 
-### Commit Body
+## Commit Body
 
 Include a body when the change is non-trivial:
-* Use bullet points
-* Explain **why**, not just **what**
-* Mention side effects or important behavior changes
+- Use bullet points
+- Explain why, not just what
+- Mention side effects or important behavior changes
 
 **Example:**
 ```
