@@ -25,12 +25,12 @@ Begin every session by:
 1. Running `pwd` to confirm your working directory
 2. Reading `progress.txt`, `features.json`, and git logs
 3. Running `init.sh` to restore the environment
-4. Manually running a fundamental integration test before implementing new features
+4. Running the test suite and recording the pass/fail summary in `progress.txt`
 5. Selecting the highest-priority incomplete item from `features.json`
 
-## Feature List Format (`features.json`)
+## Feature List (`features.json`)
 
-Track all requirements in a JSON file, not Markdown.
+Track all requirements in a JSON file, not Markdown. It is unacceptable to remove or edit feature entries because this could lead to missing or incomplete functionality.
 
 ```json
 {
@@ -38,46 +38,45 @@ Track all requirements in a JSON file, not Markdown.
     {
       "id": 1,
       "category": "functional",
-      "description": "New chat button creates a fresh conversation",
-      "steps": [
-        "Navigate to main interface",
-        "Click the 'New Chat' button",
-        "Verify a new conversation is created"
+      "description": "Users can start a new chat from the main interface",
+      "acceptance_criteria": [
+        "A 'New Chat' button is present and visible on the main interface",
+        "Clicking it opens a fresh conversation with a welcome state",
+        "The new conversation appears in the sidebar"
       ],
       "status": "not_started"
     }
   ],
   "total": 200,
-  "passing": 0,
-  "failing": 0,
+  "complete": 0,
   "not_started": 200
 }
 ```
 
-Valid `status` values: `"not_started"`, `"failing"`, `"passing"`
+Valid `status` values: `"not_started"`, `"complete"`
 
 ### Rules
 
-- Only update the `status` field. Do not remove or edit any test entry — doing so could lead to missing or buggy functionality.
-- Set `status: "passing"` only after running end-to-end self-verification, not just unit tests or curl.
-- Do not try to one-shot all the implementations
+- Only update the `status` field. Do not remove or edit any feature entry.
+- Set `status: "complete"` only after running the test suite and verifying the feature end-to-end.
+- Do not try to one-shot all the implementations.
 
 ## Progress File (`progress.txt`)
 
 Append a summary at the end of every session:
 
 - What was worked on
-- Which tests were completed (IDs and names)
+- Which features were completed (IDs and names)
+- Test suite summary (how many passing, failing, not run)
 - Any known issues, side effects, or blockers
 - Environment state at session end
 
 Example:
 ```
 Session 3:
-- Fixed authentication token validation
-- Completed test #1 (new chat button) — now passing
-- Next: investigate test #2 (user_management) failures
-- Note: do not remove tests
+- Implemented new chat button (feature #1) — complete
+- Test suite: 12 passing, 1 failing (user_management), 4 not run
+- Next: investigate user_management test failure
 ```
 
 ## `init.sh`
@@ -90,7 +89,8 @@ Read and run `init.sh` at the start of every session. It:
 
 ## State Management
 
-- **Structured state** (test results, task status): use JSON so schema requirements are clear
+- **Feature status**: use `features.json` so schema requirements are clear
+- **Test results**: run the test suite each session and record the summary in `progress.txt` — the test files in the codebase are the source of truth
 - **Progress notes** (general context, blockers): use freeform text in `progress.txt`
 - **History and checkpoints**: use git — it provides a log of completed work and allows rollback
 
@@ -104,7 +104,7 @@ When starting a fresh context window, discover state from the filesystem rather 
 
 - Run `pwd` — only read and write files in your working directory
 - Review `progress.txt`, `features.json`, and git logs
-- Run a fundamental integration test before moving on to new features
+- Run the test suite and record the summary in `progress.txt` before moving on to new features
 
 ## Incremental Progress
 
@@ -123,15 +123,16 @@ This is a very long task. Plan your work clearly. Complete components before mov
 |---|--------------------------------------------------------|
 | Declaring the project complete prematurely | Create 200+ item `features.json`, all `not_started`    |
 | Buggy or undocumented code left between sessions | Write `init.sh` + `progress.txt`; commit on completion |
-| Marking features done without testing | Run end-to-end verification before setting `passing`   |
+| Marking features done without testing | Run test suite and verify end-to-end before setting `complete` |
 | Wasted time on environment setup | Read and run `init.sh` at session start                |
 
 ## Testing
 
-- Prefer end-to-end browser automation (e.g., Playwright MCP, Puppeteer MCP) over unit tests or curl.
-- Perform self-verification before marking any feature as passing.
+- Run the test suite at the start and end of every session. Record the pass/fail summary in `progress.txt`.
+- The test files in the codebase are the source of truth — do not track test status in a separate JSON file.
+- Prefer end-to-end browser automation (e.g., Playwright MCP, Puppeteer MCP) over unit tests or curl for verifying features.
+- Do not remove or edit existing tests — doing so could lead to missing or buggy functionality.
 - Browser-native alert modals are not visible to Puppeteer MCP — do not rely on them.
-- It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality.
 
 ## Balancing Autonomy and Safety
 
